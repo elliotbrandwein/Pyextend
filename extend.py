@@ -36,8 +36,9 @@ def extend(*args):
             for name in options:
                 if name in target:
                     src = target[name]
-
-                copy = options[name]
+                if options:
+                    print(name,options)
+                    copy = options[name]
 
                 # Prevent never-ending loop
                 if target == copy:
@@ -63,14 +64,14 @@ def extend(*args):
                     target[name] = extend(deep, clone, copy)
 
                 # Don't bring in undefined values
-                elif copy is not None:
+                elif copy is not None and target:
                     target[name] = copy
 
     return target
 
-# TODO fix the true/false part in first param, as well as the merging of dicts, by adding in new dicts
-x = {"apple": 0, "banana": {"weight": 52, "price": 100}, "cherry": 97}
-y = {"banana": {"price": 200}, "durrian": 100}
+# TODO fix the merging of lists
+x = {"apple": 0, "banana": {"weight": 52, "price": 3}, "cherry": 97}
+y = {"banana": {"price": [1,2,3]}, "durrian": 100}
 z = {"test": 0, "buddy": 4, "hi": 4}
 print(extend(True,x, y))
 print(extend(x,y))
