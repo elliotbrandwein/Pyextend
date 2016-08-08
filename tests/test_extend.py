@@ -69,5 +69,7 @@ class TestExtend(unittest.TestCase):
                         "foobar": 1}
         print("test: passed")
         self.assertEqual(extend(sample_dict1, sample_dict2), sample_dict3)
+
+
 if __name__ == '__main__':
     unittest.main()
