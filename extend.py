@@ -39,8 +39,8 @@ def extend(*args):
                 else:
                     src = None
                 if options:
-                    print(name,options)
-                    copy = options[name]
+                    # print(name,options)
+                     copy = options[name]
 
                 # Prevent never-ending loop
                 if target == copy:
@@ -72,10 +72,5 @@ def extend(*args):
     return target
 
 # TODO fix the merging of lists
-x = {"apple": 0, "banana": {"weight": 52, "price": 3}, "cherry": 97}
-y = {"banana": {"price": {"how": {"many": {"layers": 1} } } }, "durrian": 100}
-z = {"test": 0, "buddy": 4, "hi": 4}
-print(extend(True,x, y))
-print(extend(x,y))
 
 
