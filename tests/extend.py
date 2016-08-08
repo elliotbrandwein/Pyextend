@@ -72,6 +72,4 @@ def extend(*args):
     return target
 
 # TODO fix the merging of lists
-sample_dict1 = {"foo": 1001, "bar": 1}
-sample_dict2 = {"bar": [1,"2",True,None,1.0],"foobar": 1 }
-print(extend(sample_dict1,sample_dict2))
+
