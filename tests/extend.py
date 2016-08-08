@@ -82,6 +82,3 @@ def extend(*args):
     return target
 
 # TODO fix the merging of lists with true
-sample_dict1 = {"foo": 1}
-sample_dict2 = {"bar": { "layer2": [ {"layer3": [{"layer4": 5}]} ] } }
-print(extend(sample_dict1,sample_dict2))
