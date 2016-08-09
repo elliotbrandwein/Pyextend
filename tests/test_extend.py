@@ -14,7 +14,7 @@ class TestExtend(unittest.TestCase):
         print("\n"+"testing extend with one input")
         sample_dict = {"test": 1}
         self.assertEqual(extend(sample_dict), sample_dict)
-        print("test: passed")
+
 
     def test_2_dicts(self):
         print("\n"+"testing extend with two inputs")
@@ -22,7 +22,6 @@ class TestExtend(unittest.TestCase):
         sample_dict2 = {"bar": 2}
         sample_dict3 = {"foo": 1, "bar": 2}
         self.assertEqual(extend(sample_dict1, sample_dict2), sample_dict3)
-        print("test: passed")
 
     def test_false_extend(self):
         print("\n"+"testing extend of two dicts with false")
@@ -32,7 +31,6 @@ class TestExtend(unittest.TestCase):
         sample_dict3 = {"apple": 0, "banana": {"price": 200}, "cherry": 97,
                         "durian": 100}
         self.assertEqual(extend(False, sample_dict1, sample_dict2), sample_dict3)
-        print("test: passed")
 
     def test_true_extend(self):
         print("\n"+"testing a extend of two dicts with true")
@@ -42,7 +40,6 @@ class TestExtend(unittest.TestCase):
         sample_dict3 = {"apple": 0, "banana": {"weight": 52, "price": 200},
                         "cherry": 97, "durian": 100}
         self.assertEqual(extend(True, sample_dict1, sample_dict2), sample_dict3)
-        print("test: passed")
 
     def test_recursive_dicts(self):
         print("\n"+"testing merging of a recursive dicts")
@@ -51,7 +48,6 @@ class TestExtend(unittest.TestCase):
         sample_dict3 = {"foobar": 1, "layer1":
                         {"layer2": {"layer3": {"last_layer": 0}}}}
         self.assertEqual(extend(sample_dict1, sample_dict2), sample_dict3)
-        print("test: passed")
 
     def test_merge_on_deep_layer(self):
         print("\n"+"testing merging on a deep layer")
@@ -59,7 +55,6 @@ class TestExtend(unittest.TestCase):
         sample_dict2 = {"layer1": {"layer2": {"layer4": {"last_layer": 0}}}}
         sample_dict3 = {"layer1": {"layer2": {"layer4": {"last_layer": 0}}}}
         self.assertEqual(extend(sample_dict1, sample_dict2), sample_dict3)
-        print("test: passed")
 
     def test_one_merging_list_with_primitive_datatypes(self):
         print("\n"+"testing merging a list into a dict")
@@ -67,7 +62,6 @@ class TestExtend(unittest.TestCase):
         sample_dict2 = {"bar": [1, "2", 3.0, True, None], "foobar": 1}
         sample_dict3 = {"foo": 1001, "bar": [1, "2", 3.0, True, None],
                         "foobar": 1}
-        print("test: passed")
         self.assertEqual(extend(sample_dict1, sample_dict2), sample_dict3)
 
 
