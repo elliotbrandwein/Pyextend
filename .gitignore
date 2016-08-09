@@ -2,3 +2,4 @@
 extend.js
 __pycache__/
 scrapy.py
+*.pyc
