@@ -1,5 +1,10 @@
-# does not exist in python 2.7+
-from collections.abc import Mapping, MutableSequence
+from sys import version
+py_version = eval(version[:3])
+
+if py_version > 3.2:
+    from collections.abc import Mapping, MutableSequence
+else:
+    from collections import Mapping, MutableSequence
 
 # this function should behave exactly like the jquery extend function,
 # Except for using extend with 1 argument:
