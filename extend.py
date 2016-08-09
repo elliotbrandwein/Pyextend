@@ -13,7 +13,7 @@ def extend(*args):
     i = 1
     args_length = len(args)
     deep = False
-
+    options = None
     # Handle a deep copy situation
     if isinstance(target, bool):
         deep = target
@@ -36,6 +36,7 @@ def extend(*args):
         if args[index] is not None:
             options = args[index]
             if isinstance(options, Mapping):
+                # print("options:", options)
                 for name in options:
                     if target and name in target:
                         src = target[name]
@@ -54,7 +55,6 @@ def extend(*args):
                     if deep and copy and (isinstance(copy, Mapping) or copy_is_list):
 
                         if copy_is_list:
-                            copy_is_list = False
                             if src is not None and isinstance(src, MutableSequence):
                                 clone = src
                             else:
@@ -82,31 +82,21 @@ def extend(*args):
                 print("target", target)
                 return options
 
+    # handles the missing last layer on a deep copy,
+    if len(target) == 0 and options:
+        target = options
+
     return target
-# TODO merging true with lists, and true merging lists missing last layer
+
+# TODO merging true with lists
 
 # bug 1
 # sample_dict1 = {"red": [ {"foo": 1, "bling": 1}, "value", "more",["value"] ] }
 # sample_dict2 = {"red": [{"foo": 2, "bar": 1}, "hi"]}
 # sample_dict3 = {"red": [{"foo": 2, "bar": 1, "bling": 1}, "hi", "more"]}
 
-# bug 2 
-sample_dict1 = {"layer1":
-                    {"layer2":
-                         {"layer3":
-                              {"layer4":
-                                   {"layer5":
-                                        {"layer6":1}}}}}}
-sample_dict2 = {"layer1":
-                    {"layer2":
-                         {"layer_other_3":
-                              {"layer4":
-                                   {"layer5":
-                                        {"layer6":1 }}}}}}
 
-sample_dict3 = {'layer1': {'layer2': {'layer_other_3': {'layer4': {'layer5': {'layer6': 1}}},
-                                      'layer3': {'layer4': {'layer5': {'layer6': 1}}}}}}
-print("sample1:", sample_dict1)
-print("sample2:", sample_dict2)
-print("extend:", extend(True, sample_dict1, sample_dict2))
+# print("sample1:", sample_dict1)
+# print("sample2:", sample_dict2)
+# print("extend:", extend(True, sample_dict1, sample_dict2))
 # print("correct v:", sample_dict3 )
