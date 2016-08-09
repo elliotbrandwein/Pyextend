@@ -15,7 +15,6 @@ class TestExtend(unittest.TestCase):
         sample_dict = {"test": 1}
         self.assertEqual(extend(sample_dict), sample_dict)
 
-
     def test_2_dicts(self):
         print("\n"+"testing extend with two inputs")
         sample_dict1 = {"foo": 1}
@@ -64,6 +63,12 @@ class TestExtend(unittest.TestCase):
                         "foobar": 1}
         self.assertEqual(extend(sample_dict1, sample_dict2), sample_dict3)
 
+    def test_true_merge_with_lists(self):
+        print("\n"+"testing merging dicts with lists in them")
+        sample_dict1 = {"red": [{"foo": 1, "bling": 1}, "value", "more"]}
+        sample_dict2 = {"red": [{"foo": 2, "bar": 1}, "hi"]}
+        sample_dict3 = {"red": [{"foo": 2, "bar": 1, "bling": 1}, "hi", "more"]}
+        self.assertEqual(extend(True,sample_dict1, sample_dict2), sample_dict3)
 
 if __name__ == '__main__':
     unittest.main()
