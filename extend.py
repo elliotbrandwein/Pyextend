@@ -1,4 +1,6 @@
 from sys import version
+
+# Probable hack
 py_version = eval(version[:3])
 
 if py_version > 3.2:
@@ -6,16 +8,17 @@ if py_version > 3.2:
 else:
     from collections import Mapping, MutableSequence
 
-# this function should behave exactly like the jquery extend function,
+# This function should behave exactly like the jquery extend function,
 # Except for using extend with 1 argument:
 # If that argument is False, this will return a blank dict, not a function
-# if that argument is a dict/list, this will return back that dict/list
+# If that argument is a dict/list, this will return back that dict/list
 
 
 def extend(*args):
     # for testing purposes only
     def func():
         pass
+
     if args:
         target = args[0]
     else:
