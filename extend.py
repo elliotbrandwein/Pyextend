@@ -2,7 +2,7 @@
 from collections.abc import Mapping, MutableSequence
 
 # this function should behave exactly like the jquery extend function,
-# Except for using extend with 1 argument.
+# Except for using extend with 1 argument:
 # If that argument is False, this will return a blank dict, not a function
 # if that argument is a dict/list, this will return back that dict/list
 
