@@ -21,15 +21,21 @@ class TestExtend(unittest.TestCase):
         sample_dict3 = {"foo": 1, "bar": 2}
         self.assertEqual(extend(sample_dict1, sample_dict2), sample_dict3)
 
-    def test_false_extend(self):
+    def test_false_extend_with_2_params(self):
         print("\n" + "testing extend of two dicts with false")
         sample_dict1 = {"apple": 0, "banana": {"weight": 52, "price": 100},
                         "cherry": 97}
         sample_dict2 = {"banana": {"price": 200}, "durian": 100}
-        sample_dict3 = {"apple": 0, "banana": {"price": 200}, "cherry": 97,
-                        "durian": 100}
         self.assertEqual(extend(False, sample_dict1, sample_dict2),
-                         sample_dict3)
+                         sample_dict1)
+
+    def test_false_with_1_param(self):
+        print("\n"+"testing extend of 1 dict with false")
+
+    def test_false_with_0_params(self):
+        print("\n"+"testing extend with only false as arg")
+        sample_dict1 = {"banana": {"price": 200}, "durian": 100}
+        self.assertEqual(extend(False, sample_dict1), sample_dict1)
 
     def test_true_extend(self):
         print("\n" + "testing a extend of two dicts with true")

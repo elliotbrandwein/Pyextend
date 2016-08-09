@@ -16,15 +16,24 @@ def extend(*args):
     options = None
     # Handle a deep copy situation
     if isinstance(target, bool):
-        deep = target
+        if target:
+            deep = target
 
-        # Skip the boolean and the target
-        if i < args_length:
-            target = args[i]
+            # Skip the boolean and the target
+            if i < args_length:
+                target = args[i]
+            else:
+                target = {}
+            i += 1
+
+        # this will simulate how jquery handles false, it will only not
+        # replicate it if the only arg is false, jquery would return the extend
+        # function itself, this will just pass a blank dict
         else:
-            target = {}
-        i += 1
-
+            if i < args_length:
+                return args[i]
+            else:
+                return {}
 # Handle case when target is a string or something (possible in deep copy)
     if not isinstance(target, Mapping) and not isinstance(target, type(func)) \
             and not isinstance(target, MutableSequence):
@@ -94,8 +103,6 @@ def extend(*args):
 # sample_dict1 = {"red": [ {"foo": 1, "bling": 1}, "value", "more",["value"] ] }
 # sample_dict2 = {"red": [{"foo": 2, "bar": 1}, "hi"]}
 # sample_dict3 = {"red": [{"foo": 2, "bar": 1, "bling": 1}, "hi", "more"]}
-
-
 # print("sample1:", sample_dict1)
 # print("sample2:", sample_dict2)
 # print("extend:", extend(True, sample_dict1, sample_dict2))
