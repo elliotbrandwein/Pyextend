@@ -10,12 +10,17 @@ class TestExtend(unittest.TestCase):
         print("test: passed")
 
     def test_1_dict(self):
-        print("\n" + "testing extend with one input")
+        print("\n" + "testing extend with one dict")
         sample_dict = {"test": 1}
         self.assertEqual(extend(sample_dict), sample_dict)
 
+    def test_1_list(self):
+        print("\n"+"testing extend with one list")
+        sample_list = ["value",1,2.0,False,None]
+        self.assertEqual(extend(sample_list),sample_list)
+
     def test_2_dicts(self):
-        print("\n" + "testing extend with two inputs")
+        print("\n" + "testing extend with two dicts")
         sample_dict1 = {"foo": 1}
         sample_dict2 = {"bar": 2}
         sample_dict3 = {"foo": 1, "bar": 2}
@@ -30,12 +35,12 @@ class TestExtend(unittest.TestCase):
                          sample_dict1)
 
     def test_false_with_1_param(self):
-        print("\n"+"testing extend of 1 dict with false")
+        sample_dict1 = {"banana": {"price": 200}, "durian": 100}
+        self.assertEqual(extend(False, sample_dict1), sample_dict1)
 
     def test_false_with_0_params(self):
         print("\n"+"testing extend with only false as arg")
-        sample_dict1 = {"banana": {"price": 200}, "durian": 100}
-        self.assertEqual(extend(False, sample_dict1), sample_dict1)
+        self.assertEqual(extend(False), {})
 
     def test_true_extend(self):
         print("\n" + "testing a extend of two dicts with true")

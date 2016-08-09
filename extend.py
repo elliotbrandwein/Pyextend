@@ -1,5 +1,10 @@
 # does not exist in python 2.7+
-from collections.abc import Mapping,MutableSequence
+from collections.abc import Mapping, MutableSequence
+
+# this function should behave exactly like the jquery extend function,
+# Except for using extend with 1 argument.
+# If that argument is False, this will return a blank dict, not a function
+# if that argument is a dict/list, this will return back that dict/list
 
 
 def extend(*args):
@@ -16,24 +21,17 @@ def extend(*args):
     options = None
     # Handle a deep copy situation
     if isinstance(target, bool):
-        if target:
-            deep = target
+        # if target:
+        deep = target
 
-            # Skip the boolean and the target
-            if i < args_length:
-                target = args[i]
-            else:
-                target = {}
-            i += 1
-
-        # this will simulate how jquery handles false, it will only not
-        # replicate it if the only arg is false, jquery would return the extend
-        # function itself, this will just pass a blank dict
+        # Skip the boolean and the target
+        if i < args_length:
+            target = args[i]
         else:
-            if i < args_length:
-                return args[i]
-            else:
-                return {}
+            target = {}
+        i += 1
+
+
 # Handle case when target is a string or something (possible in deep copy)
     if not isinstance(target, Mapping) and not isinstance(target, type(func)) \
             and not isinstance(target, MutableSequence):
@@ -61,10 +59,12 @@ def extend(*args):
 
                     copy_is_list = isinstance(copy, MutableSequence)
                     # Recurse if we're merging dicts or lists
-                    if deep and copy and (isinstance(copy, Mapping) or copy_is_list):
+                    if deep and copy and (isinstance(copy, Mapping)
+                                          or copy_is_list):
 
                         if copy_is_list:
-                            if src is not None and isinstance(src, MutableSequence):
+                            if src is not None and isinstance(src,
+                                                              MutableSequence):
                                 clone = src
                             else:
                                 clone = []
@@ -100,10 +100,10 @@ def extend(*args):
 # TODO merging true with lists
 
 # bug 1
-# sample_dict1 = {"red": [ {"foo": 1, "bling": 1}, "value", "more",["value"] ] }
-# sample_dict2 = {"red": [{"foo": 2, "bar": 1}, "hi"]}
-# sample_dict3 = {"red": [{"foo": 2, "bar": 1, "bling": 1}, "hi", "more"]}
-# print("sample1:", sample_dict1)
-# print("sample2:", sample_dict2)
-# print("extend:", extend(True, sample_dict1, sample_dict2))
-# print("correct v:", sample_dict3 )
+sample_dict1 = {"red": [ {"foo": 1, "bling": 1}, "value", "more",["value"] ] }
+sample_dict2 = {"red": [{"foo": 2, "bar": 1}, "hi"]}
+sample_dict3 = {"red": [{"foo": 2, "bar": 1, "bling": 1}, "hi", "more"]}
+print("sample1:", sample_dict1)
+print("sample2:", sample_dict2)
+print("extend:", extend(True, sample_dict1, sample_dict2))
+print("correct v:", sample_dict3 )
