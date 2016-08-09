@@ -106,6 +106,10 @@ class TestExtend(unittest.TestCase):
                         "layer1_extra2": 2}
         self.assertEqual(extend(True, sample_dict1, sample_dict2), result)
 
-
+    def test_merge_dict_in_list_with_overlap(self):
+        sample_dict1 = [{"foo":1, "bling": 1}, "extra1",["extra2"]]
+        sample_dict2 = [{"foo":2, "bar": 2}]
+        result = [{"foo":2,"bar":2, "bling": 1},"extra1",["extra2"]]
+        self.assertEqual(extend(sample_dict1,sample_dict2),result)
 if __name__ == '__main__':
     unittest.main()

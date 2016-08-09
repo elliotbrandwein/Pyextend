@@ -35,7 +35,6 @@ def extend(*args):
 # Handle case when target is a string or something (possible in deep copy)
     if not isinstance(target, Mapping) and not isinstance(target, type(func)) \
             and not isinstance(target, MutableSequence):
-        print("sees a non-dict/list")
         target = {}
 
     for index in range(i, args_length):
@@ -89,20 +88,21 @@ def extend(*args):
 
             # handles a list on a deep copy
             else:
-                print("options", options)
-                print("target", target)
                 target_length = len(target)
                 overshoot = False
                 for i in range(0, len(options)):
                     element = options[i]
+
                     if target_length < i:
                         overshoot = True
-                    if not isinstance(element, Mapping):
-                        print(target[i],element,"<----")
-                        target[i] = element
-                    elif not overshoot and not isinstance(target[i],Mapping):
-                        target[i] = element
 
+                    if not isinstance(element, Mapping):
+                        target[i] = element
+                    elif not overshoot and not isinstance(target[i], Mapping):
+                        target[i] = element
+                    # if will take care of dicts in the same position in a list
+                    else:
+                        target[i] = extend(deep, target[i], element)
                 return target
 
     # handles the missing last layer on a deep copy,
@@ -111,13 +111,3 @@ def extend(*args):
 
     return target
 
-# TODO merging true with lists
-
-# bug 1
-sample_dict1 = {"red": [ {"foo": 1, "bling": 1}, "value", "more",["extra"] ] }
-sample_dict2 = {"red": ["more_extra",{"foo": 2, "bar": 2}]}
-sample_dict3 = {"red": ["more_extra",{"foo": 2, "bar": 2}, "more", ["extra"]]}
-print("sample1:", sample_dict1)
-print("sample2:", sample_dict2)
-print("extend:", extend(True, sample_dict1, sample_dict2))
-print("correct v:", sample_dict3 )
