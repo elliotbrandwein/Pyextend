@@ -1,10 +1,11 @@
+# does not exist in python 2.7+
 from collections.abc import Mapping,MutableSequence
-# for testing purposes only
-def func():
-    pass
 
 
 def extend(*args):
+    # for testing purposes only
+    def func():
+        pass
     if args:
         target = args[0]
     else:
@@ -34,47 +35,78 @@ def extend(*args):
         # only deal with non-None values
         if args[index] is not None:
             options = args[index]
-            for name in options:
-                if target and name in target:
-                    src = target[name]
-                else:
-                    src = None
-                if options and name in options:
-                    print(options, name)
-                    copy = options[name]
-                else:
-                    copy = None
-                # Prevent never-ending loop
-                if target == copy:
-                    continue
-
-                copy_is_list = isinstance(copy, MutableSequence)
-                # Recurse if we're merging dicts or lists
-                if deep and copy and (isinstance(copy, Mapping) or copy_is_list):
-
-                    if copy_is_list:
-                        copy_is_list = False
-                        if src is not None and isinstance(src, MutableSequence):
-                            clone = src
-                        else:
-                            clone = []
+            if isinstance(options, Mapping):
+                for name in options:
+                    if target and name in target:
+                        src = target[name]
                     else:
-                        if src is not None and isinstance(src, Mapping):
-                            clone = src
-                        else:
-                            clone = {}
-
-                    # never move original objects, clone them
-                    if not isinstance(name, Mapping):
-                        target[name] = extend(deep, clone, copy)
+                        src = None
+                    if options and name in options:
+                        copy = options[name]
                     else:
-                        for deep_name in name:
-                            name = deep_name
-                        if name in target:
+                        copy = None
+                    # Prevent never-ending loop
+                    if target == copy:
+                        continue
+
+                    copy_is_list = isinstance(copy, MutableSequence)
+                    # Recurse if we're merging dicts or lists
+                    if deep and copy and (isinstance(copy, Mapping) or copy_is_list):
+
+                        if copy_is_list:
+                            copy_is_list = False
+                            if src is not None and isinstance(src, MutableSequence):
+                                clone = src
+                            else:
+                                clone = []
+                        else:
+                            if src is not None and isinstance(src, Mapping):
+                                clone = src
+                            else:
+                                clone = {}
+
+                        # never move original objects, clone them
+                        if not isinstance(name, Mapping):
                             target[name] = extend(deep, clone, copy)
+                        else:
+                            for deep_name in name:
+                                name = deep_name
+                            if name in target:
+                                target[name] = extend(deep, clone, copy)
 
-                # Don't bring in undefined values
-                elif copy is not None and target:
-                    target[name] = copy
+                    # Don't bring in undefined values
+                    elif copy is not None and target:
+                        target[name] = copy
+            else:
+                print("options", options)
+                print("target", target)
+                return options
 
     return target
+# TODO merging true with lists, and true merging lists missing last layer
+
+# bug 1
+# sample_dict1 = {"red": [ {"foo": 1, "bling": 1}, "value", "more",["value"] ] }
+# sample_dict2 = {"red": [{"foo": 2, "bar": 1}, "hi"]}
+# sample_dict3 = {"red": [{"foo": 2, "bar": 1, "bling": 1}, "hi", "more"]}
+
+# bug 2 
+sample_dict1 = {"layer1":
+                    {"layer2":
+                         {"layer3":
+                              {"layer4":
+                                   {"layer5":
+                                        {"layer6":1}}}}}}
+sample_dict2 = {"layer1":
+                    {"layer2":
+                         {"layer_other_3":
+                              {"layer4":
+                                   {"layer5":
+                                        {"layer6":1 }}}}}}
+
+sample_dict3 = {'layer1': {'layer2': {'layer_other_3': {'layer4': {'layer5': {'layer6': 1}}},
+                                      'layer3': {'layer4': {'layer5': {'layer6': 1}}}}}}
+print("sample1:", sample_dict1)
+print("sample2:", sample_dict2)
+print("extend:", extend(True, sample_dict1, sample_dict2))
+# print("correct v:", sample_dict3 )
