@@ -86,10 +86,24 @@ def extend(*args):
                     # Don't bring in undefined values
                     elif copy is not None and target:
                         target[name] = copy
+
+            # handles a list on a deep copy
             else:
                 print("options", options)
                 print("target", target)
-                return options
+                target_length = len(target)
+                overshoot = False
+                for i in range(0, len(options)):
+                    element = options[i]
+                    if target_length < i:
+                        overshoot = True
+                    if not isinstance(element, Mapping):
+                        print(target[i],element,"<----")
+                        target[i] = element
+                    elif not overshoot and not isinstance(target[i],Mapping):
+                        target[i] = element
+
+                return target
 
     # handles the missing last layer on a deep copy,
     if len(target) == 0 and options:
@@ -100,9 +114,9 @@ def extend(*args):
 # TODO merging true with lists
 
 # bug 1
-sample_dict1 = {"red": [ {"foo": 1, "bling": 1}, "value", "more",["value"] ] }
-sample_dict2 = {"red": [{"foo": 2, "bar": 1}, "hi"]}
-sample_dict3 = {"red": [{"foo": 2, "bar": 1, "bling": 1}, "hi", "more"]}
+sample_dict1 = {"red": [ {"foo": 1, "bling": 1}, "value", "more",["extra"] ] }
+sample_dict2 = {"red": ["more_extra",{"foo": 2, "bar": 2}]}
+sample_dict3 = {"red": ["more_extra",{"foo": 2, "bar": 2}, "more", ["extra"]]}
 print("sample1:", sample_dict1)
 print("sample2:", sample_dict2)
 print("extend:", extend(True, sample_dict1, sample_dict2))
