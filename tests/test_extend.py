@@ -16,8 +16,8 @@ class TestExtend(unittest.TestCase):
 
     def test_1_list(self):
         print("\n"+"testing extend with one list")
-        sample_list = ["value",1,2.0,False,None]
-        self.assertEqual(extend(sample_list),sample_list)
+        sample_list = ["value", 1, 2.0, False, None]
+        self.assertEqual(extend(sample_list), sample_list)
 
     def test_2_dicts(self):
         print("\n" + "testing extend with two dicts")
@@ -48,7 +48,7 @@ class TestExtend(unittest.TestCase):
                         "cherry": 97}
         sample_dict2 = {"banana": {"price": 200}, "durian": 100}
         result = {"apple": 0, "banana": {"weight": 52, "price": 200},
-                        "cherry": 97, "durian": 100}
+                  "cherry": 97, "durian": 100}
         self.assertEqual(extend(True, sample_dict1, sample_dict2), result)
 
     def test_recursive_dicts(self):
@@ -70,8 +70,7 @@ class TestExtend(unittest.TestCase):
         print("\n" + "testing merging a list into a dict")
         sample_dict1 = {"foo": 1, "bar": 1}
         sample_dict2 = {"bar": [1, "2", 3.0, True, None], "foobar": 1}
-        result = {"foo": 1, "bar": [1, "2", 3.0, True, None],
-                        "foobar": 1}
+        result = {"foo": 1, "bar": [1, "2", 3.0, True, None], "foobar": 1}
         self.assertEqual(extend(sample_dict1, sample_dict2), result)
 
     def test_true_merge_with_lists_no_overlapping_dicts(self):
@@ -102,14 +101,15 @@ class TestExtend(unittest.TestCase):
         sample_dict2 = {"layer1": {"layer2": {"layer3": 2}, "layer2_extra2": 2},
                         "layer1_extra2": 2}
         result = {"layer1": {"layer2": {"layer3": 2}, "layer2_extra2": 2,
-                                   "layer2_extra1": 1}, "layer1_extra1": 1,
-                        "layer1_extra2": 2}
+                             "layer2_extra1": 1}, "layer1_extra1": 1,
+                  "layer1_extra2": 2}
         self.assertEqual(extend(True, sample_dict1, sample_dict2), result)
 
     def test_merge_dict_in_list_with_overlap(self):
-        sample_dict1 = [{"foo":1, "bling": 1}, "extra1",["extra2"]]
-        sample_dict2 = [{"foo":2, "bar": 2}]
-        result = [{"foo":2,"bar":2, "bling": 1},"extra1",["extra2"]]
-        self.assertEqual(extend(sample_dict1,sample_dict2),result)
+        sample_dict1 = [{"foo": 1, "bling": 1}, "extra1", ["extra2"]]
+        sample_dict2 = [{"foo": 2, "bar": 2}]
+        result = [{"foo": 2, "bar": 2, "bling": 1}, "extra1", ["extra2"]]
+        self.assertEqual(extend(sample_dict1, sample_dict2), result)
+
 if __name__ == '__main__':
     unittest.main()
