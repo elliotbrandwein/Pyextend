@@ -1,9 +1,9 @@
-from sys import version
+from sys import version_info
 
-# Probable hack
-py_version = eval(version[:3])
 
-if py_version > 3.2:
+PY_33 = version_info >= (3, 3)
+
+if PY_33:
     from collections.abc import Mapping, MutableSequence
 else:
     from collections import Mapping, MutableSequence

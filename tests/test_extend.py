@@ -111,5 +111,6 @@ class TestExtend(unittest.TestCase):
         result = [{"foo": 2, "bar": 2, "bling": 1}, "extra1", ["extra2"]]
         self.assertEqual(extend(sample_dict1, sample_dict2), result)
 
+
 if __name__ == '__main__':
     unittest.main()
