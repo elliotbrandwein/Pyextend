@@ -108,7 +108,7 @@ def extend(*args):
                         target[i] = element
                     elif not overshoot and not isinstance(target[i], Mapping):
                         target[i] = element
-                    # if will take care of dicts in the same position in a list
+                    #this will take care of dicts in the same position in a list
                     else:
                         target[i] = extend(deep, target[i], element)
                 return target
