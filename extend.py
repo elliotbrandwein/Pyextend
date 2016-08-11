@@ -1,5 +1,5 @@
 from sys import version_info
-
+from types import FunctionType
 
 PY_33 = version_info >= (3, 3)
 
@@ -15,9 +15,6 @@ else:
 
 
 def extend(*args):
-    # for testing purposes only
-    def func():
-        pass
 
     if args:
         target = args[0]
@@ -28,10 +25,9 @@ def extend(*args):
     deep = False
     options = None
     # Handle a deep copy situation
-    if isinstance(target, bool):
-        # if target:
-        deep = target
 
+    if isinstance(target, bool):
+        deep = target
         # Skip the boolean and the target
         if i < args_length:
             target = args[i]
@@ -41,7 +37,7 @@ def extend(*args):
 
 
 # Handle case when target is a string or something (possible in deep copy)
-    if not isinstance(target, Mapping) and not isinstance(target, type(func)) \
+    if not isinstance(target, Mapping) and not isinstance(target, FunctionType)\
             and not isinstance(target, MutableSequence):
         target = {}
 
@@ -50,7 +46,6 @@ def extend(*args):
         if args[index] is not None:
             options = args[index]
             if isinstance(options, Mapping):
-                # print("options:", options)
                 for name in options:
                     if target and name in target:
                         src = target[name]
@@ -60,11 +55,13 @@ def extend(*args):
                         copy = options[name]
                     else:
                         copy = None
+
                     # Prevent never-ending loop
                     if target == copy:
                         continue
 
                     copy_is_list = isinstance(copy, MutableSequence)
+
                     # Recurse if we're merging dicts or lists
                     if deep and copy and (isinstance(copy, Mapping)
                                           or copy_is_list):
@@ -103,12 +100,11 @@ def extend(*args):
 
                     if target_length < i:
                         overshoot = True
-
                     if not isinstance(element, Mapping):
                         target[i] = element
                     elif not overshoot and not isinstance(target[i], Mapping):
                         target[i] = element
-                    #this will take care of dicts in the same position in a list
+                    # this will take care of overlapping dicts in two lists
                     else:
                         target[i] = extend(deep, target[i], element)
                 return target
@@ -118,4 +114,3 @@ def extend(*args):
         target = options
 
     return target
-
