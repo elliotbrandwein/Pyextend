@@ -65,7 +65,7 @@ def extend(*args):
                     target[name] = extend(deep, clone, copy)
                 elif copy is not None:
                     target[name] = copy
-        else:
+        elif isinstance(options,MutableSequence):
             target_length = len(target)
             overshoot = False
             for i in range(0, len(options)):

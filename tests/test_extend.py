@@ -5,32 +5,25 @@ from extend import extend
 
 class TestExtend(unittest.TestCase):
     def test_0_dicts(self):
-        print("testing extend with no input")
         self.assertDictEqual(extend(), {})
-        print("test: passed")
 
     def test_1_dict(self):
-        print("\n" + "testing extend with one dict")
         sample_dict1 = {"test": 1}
         sample_dict1_untouched = {"test": 1}
         self.assertDictEqual(extend(sample_dict1), sample_dict1_untouched)
 
     def test_1_list(self):
-        print("\n"+"testing extend with one list")
         sample_list = ["value", 1, 2.0, False, None]
         sample_list_untouched = ["value", 1, 2.0, False, None]
         self.assertListEqual(extend(sample_list), sample_list_untouched)
 
     def test_2_dicts(self):
-        print("\n" + "testing extend with two dicts")
         sample_dict1 = {"foo": 1}
         sample_dict2 = {"bar": 2}
         result = {"foo": 1, "bar": 2}
         self.assertDictEqual(extend(sample_dict1, sample_dict2), result)
 
     def test_true_merge_preserving_originals(self):
-        print("\n"+"testing the merging of a blank dict with two others, and "
-                   "true")
         sample_dict1 = {}
         sample_dict2 = {"apple": 0, "banana": {"weight": 52, "price": 100},
                         "cherry": 97}
@@ -45,8 +38,6 @@ class TestExtend(unittest.TestCase):
         self.assertDictEqual(sample_dict3, sample_dict3_untouched)
 
     def test_merge_preserving_originals(self):
-        print("\n"+"testing the merging of a blank dict with two others, and "
-                   "true")
         sample_dict1 = {}
         sample_dict2 = {"apple": 0, "banana": {"weight": 52, "price": 100},
                         "cherry": 97}
@@ -61,7 +52,6 @@ class TestExtend(unittest.TestCase):
         self.assertDictEqual(sample_dict3, sample_dict3_untouched)
 
     def test_true_extend(self):
-        print("\n" + "testing a extend of two dicts with true")
         sample_dict1 = {"apple": 0, "banana": {"weight": 52, "price": 100},
                         "cherry": 97}
         sample_dict2 = {"banana": {"price": 200}, "durian": 100}
@@ -70,7 +60,6 @@ class TestExtend(unittest.TestCase):
         self.assertDictEqual(extend(True, sample_dict1, sample_dict2), result)
 
     def test_recursive_dicts(self):
-        print("\n" + "testing merging of a recursive dicts")
         sample_dict1 = {"foobar": 1}
         sample_dict2 = {"layer1": {"layer2": {"layer3": {"last_layer": 0}}}}
         result = {"foobar": 1, "layer1":
@@ -78,7 +67,6 @@ class TestExtend(unittest.TestCase):
         self.assertDictEqual(extend(sample_dict1, sample_dict2), result)
 
     def test_merge_on_deep_layer(self):
-        print("\n" + "testing merging on a deep layer")
         sample_dict1 = {"layer1": {"layer2": {"layer3": {"last_layer": 1}}}}
         sample_dict2 = {"layer1": {"layer2": {"layer_3": {"last_layer": 2}}}}
         result = {"layer1": {"layer2": {"layer_3": {"last_layer": 2}}}}
@@ -92,7 +80,6 @@ class TestExtend(unittest.TestCase):
         self.assertDictEqual(extend(sample_dict1, sample_dict2), result)
 
     def test_true_merge_with_lists_no_overlapping_dicts(self):
-        print("\n" + "testing merging dicts with lists that don't overlap")
         sample_dict1 = {
             "outer": [{"foo": 1, "bar": 1}, "extra1", "extra2", ["extra3"]]}
         sample_dict2 = {"outer": ["more_extra", {"foo": 2, "bar": 2}]}
@@ -102,7 +89,6 @@ class TestExtend(unittest.TestCase):
         self.assertDictEqual(extend(True, sample_dict1, sample_dict2), result)
 
     def test_true_merge_deep_dicts(self):
-        print("\n"+"testing the merging of dicts with deep layers")
         sample_dict1 = {"layer1": {"layer2": {"layer3": {"layer4":
                                                 {"layer5": {"layer6": 1}}}}}}
         sample_dict2 = {"layer1": {"layer2": {"layer_other_3": {"layer4":
@@ -139,5 +125,16 @@ class TestExtend(unittest.TestCase):
         self.assertDictEqual(extend(sample_dict1, sample_dict2, sample_dict3,
                                 sample_dict4, sample_dict5), result)
 
+    def test_None_is_2nd_arg(self):
+        settings = {"xnumber1": 5, "xnumber2": 7, "xstring1": "peter",
+                    "xstring2": "pan"}
+        options = {"xnumber2": 1, "xstring2": "x", "xxx": "newstring"}
+        options_copy = {"xnumber2": 1, "xstring2": "x", "xxx": "newstring"}
+        merged = {"xnumber1": 5, "xnumber2": 1, "xstring1": "peter",
+                  "xstring2": "x", "xxx": "newstring"}
+        extend(settings, None, options)
+        self.assertDictEqual(settings, merged)
+        self.assertDictEqual(options, options_copy)
+    
 if __name__ == '__main__':
     unittest.main()
