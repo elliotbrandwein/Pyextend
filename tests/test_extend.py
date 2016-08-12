@@ -62,8 +62,8 @@ class TestExtend(unittest.TestCase):
     def test_recursive_dicts(self):
         sample_dict1 = {"foobar": 1}
         sample_dict2 = {"layer1": {"layer2": {"layer3": {"last_layer": 0}}}}
-        result = {"foobar": 1, "layer1":
-            {"layer2": {"layer3": {"last_layer": 0}}}}
+        result = {"foobar": 1, "layer1": {"layer2": {"layer3": {"last_layer": 0}
+                                                     }}}
         self.assertDictEqual(extend(sample_dict1, sample_dict2), result)
 
     def test_merge_on_deep_layer(self):
@@ -72,7 +72,7 @@ class TestExtend(unittest.TestCase):
         result = {"layer1": {"layer2": {"layer_3": {"last_layer": 2}}}}
         self.assertDictEqual(extend(sample_dict1, sample_dict2), result)
 
-    def test_one_merging_list_with_primitive_datatypes(self):
+    def test_one_merging_list_with_primitive_data_types(self):
         print("\n" + "testing merging a list into a dict")
         sample_dict1 = {"foo": 1, "bar": 1}
         sample_dict2 = {"bar": [1, "2", 3.0, True, None], "foobar": 1}
@@ -98,10 +98,10 @@ class TestExtend(unittest.TestCase):
         self.assertDictEqual(sample_dict2, sample_dict2_copy)
 
     def test_true_merge_deep_dicts(self):
-        sample_dict1 = {"layer1": {"layer2": {"layer3": {"layer4": {"layer5":
-                                                            {"layer6": 1}}}}}}
-        sample_dict2 = {"layer1": {"layer2": {"layer_other_3": {"layer4":
-                                             {"layer5": {"layer6": 1}}}}}}
+        sample_dict1 = {"layer1": {"layer2": {"layer3": {"layer4": {"layer5": {
+            "layer6": 1}}}}}}
+        sample_dict2 = {"layer1": {"layer2": {"layer_other_3": {"layer4": {
+            "layer5": {"layer6": 1}}}}}}
 
         result = {'layer1': {
             'layer2': {'layer_other_3': {'layer4': {'layer5': {'layer6': 1}}},
@@ -135,25 +135,25 @@ class TestExtend(unittest.TestCase):
                                     sample_dict4, sample_dict5), result)
 
     def test_None_is_2nd_arg(self):
-        # copied from jquery
-        settings = {"xnumber1": 5, "xnumber2": 7, "xstring1": "peter",
-                    "xstring2": "pan"}
-        options = {"xnumber2": 1, "xstring2": "x", "xxx": "newstring"}
-        options_copy = {"xnumber2": 1, "xstring2": "x", "xxx": "newstring"}
-        merged = {"xnumber1": 5, "xnumber2": 1, "xstring1": "peter",
-                  "xstring2": "x", "xxx": "newstring"}
-        extend(settings, None, options)
-        self.assertDictEqual(settings, merged)
-        self.assertDictEqual(options, options_copy)
+        sample_dict1 = {
+            "number1": 5, "number2": 7, "string1": "peter",
+                          "string2": "pan"}
+        sample_dict2 = {"number2": 1, "string2": "x", "new_string": "xxx"}
+        sample_dict2_copy = {"number2": 1, "string2": "x", "new_string": "xxx"}
+        correct_result = {"number1": 5, "number2": 1, "string1": "peter",
+                          "string2": "x", "new_string": "xxx"}
+        extend(sample_dict1, None, sample_dict2)
+        self.assertDictEqual(sample_dict1, correct_result)
+        self.assertDictEqual(sample_dict2, sample_dict2_copy)
 
-    def test_dict_with_Nones(self):
-        # copied from jquery
-        options = {"xnumber2": 1, "xstring2": "x", "xxx": "newstring"}
-        nullUndef = {"xnumber2": None}
-        correct_result = {"xnumber2": None, "xxx": "newstring", "xstring2": "x"}
-        result = extend(options,nullUndef)
-        self.assertEqual(nullUndef["xnumber2"], None)
-        self.assertDictEqual(result,correct_result)
+    def test_merge_dict_with_Nones(self):
+        options = {"number1": 1, "x_string": "x", "string": "new_string"}
+        null_dict = {"number1": None}
+        correct_result = {"number1": None, "x_string": "x",
+                          "string": "new_string"}
+        result = extend(options, null_dict)
+        self.assertEqual(null_dict["number1"], None)
+        self.assertDictEqual(result, correct_result)
 
 if __name__ == '__main__':
     unittest.main()
