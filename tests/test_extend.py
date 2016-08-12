@@ -88,6 +88,15 @@ class TestExtend(unittest.TestCase):
                           "extra2", ["extra3"]]}
         self.assertDictEqual(extend(True, sample_dict1, sample_dict2), result)
 
+    def test_true_merge_reg_dict_with_dict_with_list(self):
+        sample_dict1 = {"foo": 1}
+        sample_dict1_copy = {"foo": 1}
+        sample_dict2 = {"bar": ["list"]}
+        sample_dict2_copy = {"bar": ["list"]}
+        result = {"foo": 1, "bar": ["list"]}
+        self.assertDictEqual(extend(True, sample_dict1, sample_dict2), result)
+        self.assertDictEqual(sample_dict2, sample_dict2_copy)
+
     def test_true_merge_deep_dicts(self):
         sample_dict1 = {"layer1": {"layer2": {"layer3": {"layer4": {"layer5":
                                                             {"layer6": 1}}}}}}

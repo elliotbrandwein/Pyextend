@@ -80,3 +80,8 @@ def extend(*args):
                     target[i] = extend(deep, target[i], element)
             return target
     return target
+
+if __name__ == '__main__':
+    obj1 = {'one': 11, 'two': 22}
+    obj2 = {'one': 00, 'three': 33}
+    extend(obj1, obj2)
