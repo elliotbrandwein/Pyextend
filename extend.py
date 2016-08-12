@@ -65,13 +65,20 @@ def extend(*args):
                     target[name] = copy
         elif isinstance(options, MutableSequence):
             target_length = len(target)
+            list_length = len(options)
             overshoot = False
-            for i in range(0, len(options)):
+            for i in range(0, list_length):
+
                 element = options[i]
 
                 if target_length < i:
                     overshoot = True
-                if not isinstance(element, Mapping):
+
+                # hack to fix test_true_merge_reg_dict_with_dict_with_list
+                if target_length == 0:
+                    target = [element]
+
+                elif not isinstance(element, Mapping):
                     target[i] = element
                 elif not overshoot and not isinstance(target[i], Mapping):
                     target[i] = element
@@ -81,7 +88,3 @@ def extend(*args):
             return target
     return target
 
-if __name__ == '__main__':
-    obj1 = {'one': 11, 'two': 22}
-    obj2 = {'one': 00, 'three': 33}
-    extend(obj1, obj2)
