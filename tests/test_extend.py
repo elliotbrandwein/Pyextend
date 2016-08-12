@@ -135,6 +135,6 @@ class TestExtend(unittest.TestCase):
         extend(settings, None, options)
         self.assertDictEqual(settings, merged)
         self.assertDictEqual(options, options_copy)
-    
+
 if __name__ == '__main__':
     unittest.main()

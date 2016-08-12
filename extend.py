@@ -10,11 +10,8 @@ else:
 
 
 def extend(*args):
-    options = None
-    name  = None
     src = None
     copy = None
-    copyIsArray = None
     clone = None
     if args:
         target = args[0]
@@ -31,10 +28,11 @@ def extend(*args):
         else:
             target = {}
         i += 1
-    if not isinstance(target, MutableSequence) and not isinstance(target, Mapping) \
-        and not isinstance(target, FunctionType):
+    if not isinstance(target, MutableSequence) and not \
+            isinstance(target, Mapping) \
+            and not isinstance(target, FunctionType):
         target = {}
-    for index in range(i,args_length):
+    for index in range(i, args_length):
         if index <= args_length:
             options = args[index]
         else:
@@ -48,11 +46,11 @@ def extend(*args):
                 if target == copy:
                     continue
 
-                if deep and copy and (isinstance(copy, Mapping) \
-                                              or isinstance(copy, MutableSequence)):
-                    copyIsArray = isinstance(copy, MutableSequence)
-                    if copyIsArray:
-                        copyIsArray = False
+                if deep and copy and (isinstance(copy, Mapping)
+                                      or isinstance(copy, MutableSequence)):
+                    copy_is_list_type = isinstance(copy, MutableSequence)
+                    if copy_is_list_type:
+                        copy_is_list_type = False
                         if src and isinstance(src, MutableSequence):
                             clone = src
                         else:
@@ -65,7 +63,7 @@ def extend(*args):
                     target[name] = extend(deep, clone, copy)
                 elif copy is not None:
                     target[name] = copy
-        elif isinstance(options,MutableSequence):
+        elif isinstance(options, MutableSequence):
             target_length = len(target)
             overshoot = False
             for i in range(0, len(options)):
