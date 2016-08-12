@@ -46,8 +46,8 @@ class TestExtend(unittest.TestCase):
         sample_dict3_untouched = sample_dict3
         result = {"apple": 0, "banana": {"price": 200}, "durian": 100,
                   "cherry": 97}
-        self.assertDictEqual(extend(sample_dict1, sample_dict2, sample_dict3)
-                         , result)
+        self.assertDictEqual(extend(sample_dict1, sample_dict2, sample_dict3),
+                             result)
         self.assertDictEqual(sample_dict2, sample_dict2_untouched)
         self.assertDictEqual(sample_dict3, sample_dict3_untouched)
 
@@ -89,8 +89,8 @@ class TestExtend(unittest.TestCase):
         self.assertDictEqual(extend(True, sample_dict1, sample_dict2), result)
 
     def test_true_merge_deep_dicts(self):
-        sample_dict1 = {"layer1": {"layer2": {"layer3": {"layer4":
-                                                {"layer5": {"layer6": 1}}}}}}
+        sample_dict1 = {"layer1": {"layer2": {"layer3": {"layer4": {"layer5":
+                                                            {"layer6": 1}}}}}}
         sample_dict2 = {"layer1": {"layer2": {"layer_other_3": {"layer4":
                                              {"layer5": {"layer6": 1}}}}}}
 
@@ -123,7 +123,7 @@ class TestExtend(unittest.TestCase):
         sample_dict5 = {"dict5": 5}
         result = {"dict1": 1, "dict2": 2, "dict3": 3, "dict4": 4, "dict5": 5}
         self.assertDictEqual(extend(sample_dict1, sample_dict2, sample_dict3,
-                                sample_dict4, sample_dict5), result)
+                                    sample_dict4, sample_dict5), result)
 
     def test_None_is_2nd_arg(self):
         settings = {"xnumber1": 5, "xnumber2": 7, "xstring1": "peter",
