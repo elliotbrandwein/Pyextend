@@ -135,6 +135,7 @@ class TestExtend(unittest.TestCase):
                                     sample_dict4, sample_dict5), result)
 
     def test_None_is_2nd_arg(self):
+        # copied from jquery
         settings = {"xnumber1": 5, "xnumber2": 7, "xstring1": "peter",
                     "xstring2": "pan"}
         options = {"xnumber2": 1, "xstring2": "x", "xxx": "newstring"}
@@ -144,6 +145,15 @@ class TestExtend(unittest.TestCase):
         extend(settings, None, options)
         self.assertDictEqual(settings, merged)
         self.assertDictEqual(options, options_copy)
+
+    def test_dict_with_Nones(self):
+        # copied from jquery
+        options = {"xnumber2": 1, "xstring2": "x", "xxx": "newstring"}
+        nullUndef = {"xnumber2": None}
+        correct_result = {"xnumber2": None, "xxx": "newstring", "xstring2": "x"}
+        result = extend(options,nullUndef)
+        self.assertEqual(nullUndef["xnumber2"], None)
+        self.assertDictEqual(result,correct_result)
 
 if __name__ == '__main__':
     unittest.main()

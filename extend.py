@@ -37,6 +37,7 @@ def extend(*args):
             options = args[index]
         else:
             options = None
+        # Handle if to-be-merged variable is a dict-type
         if isinstance(options, Mapping):
             for name in options:
                 if name in target:
@@ -61,8 +62,10 @@ def extend(*args):
                         else:
                             src = {}
                     target[name] = extend(deep, clone, copy)
-                elif copy is not None:
+                else:
                     target[name] = copy
+
+        # Handle if to-be-merged variable is a list-type
         elif isinstance(options, MutableSequence):
             target_length = len(target)
             list_length = len(options)
@@ -87,4 +90,3 @@ def extend(*args):
                     target[i] = extend(deep, target[i], element)
             return target
     return target
-
