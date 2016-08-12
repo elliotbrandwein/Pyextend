@@ -74,6 +74,7 @@ def extend(*args):
 
         # Handle if to-be-merged variable is a list-type
         elif isinstance(options, MutableSequence):
+
             target_length = len(target)
             list_length = len(options)
             # overshoot is for adding a larger list to a smaller
@@ -89,7 +90,10 @@ def extend(*args):
                     target = [element]
 
                 elif not isinstance(element, Mapping):
-                    target[i] = element
+                    if target_length <= i:
+                        target.append(element)
+                    else:
+                        target[i] = element
                 elif not overshoot and not isinstance(target[i], Mapping):
                     target[i] = element
 
