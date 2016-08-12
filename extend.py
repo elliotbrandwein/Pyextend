@@ -28,15 +28,19 @@ def extend(*args):
         else:
             target = {}
         i += 1
+
+    # handle if target is not of type Mapping, MutableSequence, or Function
     if not isinstance(target, MutableSequence) and not \
             isinstance(target, Mapping) \
             and not isinstance(target, FunctionType):
         target = {}
+
     for index in range(i, args_length):
         if index <= args_length:
             options = args[index]
         else:
             options = None
+
         # Handle if to-be-merged variable is a dict-type
         if isinstance(options, Mapping):
             for name in options:
@@ -49,6 +53,7 @@ def extend(*args):
 
                 if deep and copy and (isinstance(copy, Mapping)
                                       or isinstance(copy, MutableSequence)):
+
                     copy_is_list_type = isinstance(copy, MutableSequence)
                     if copy_is_list_type:
                         copy_is_list_type = False
@@ -61,7 +66,9 @@ def extend(*args):
                             clone = src
                         else:
                             src = {}
+
                     target[name] = extend(deep, clone, copy)
+
                 else:
                     target[name] = copy
 
@@ -69,6 +76,7 @@ def extend(*args):
         elif isinstance(options, MutableSequence):
             target_length = len(target)
             list_length = len(options)
+            # overshoot is for adding a larger list to a smaller
             overshoot = False
             for i in range(0, list_length):
 
@@ -85,8 +93,10 @@ def extend(*args):
                     target[i] = element
                 elif not overshoot and not isinstance(target[i], Mapping):
                     target[i] = element
+
                 # this will take care of overlapping dicts in two lists
                 else:
                     target[i] = extend(deep, target[i], element)
             return target
+
     return target
