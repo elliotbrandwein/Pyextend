@@ -79,7 +79,6 @@ def extend(*args):
             # overshoot is for adding a larger list to a smaller
             overshoot = False
             for i in range(0, list_length):
-
                 element = options[i]
 
                 if target_length < i:
