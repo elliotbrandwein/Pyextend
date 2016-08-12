@@ -6,25 +6,27 @@ from extend import extend
 class TestExtend(unittest.TestCase):
     def test_0_dicts(self):
         print("testing extend with no input")
-        self.assertEqual(extend(), {})
+        self.assertDictEqual(extend(), {})
         print("test: passed")
 
     def test_1_dict(self):
         print("\n" + "testing extend with one dict")
-        sample_dict = {"test": 1}
-        self.assertEqual(extend(sample_dict), sample_dict)
+        sample_dict1 = {"test": 1}
+        sample_dict1_untouched = {"test": 1}
+        self.assertDictEqual(extend(sample_dict1), sample_dict1_untouched)
 
     def test_1_list(self):
         print("\n"+"testing extend with one list")
         sample_list = ["value", 1, 2.0, False, None]
-        self.assertEqual(extend(sample_list), sample_list)
+        sample_list_untouched = ["value", 1, 2.0, False, None]
+        self.assertListEqual(extend(sample_list), sample_list_untouched)
 
     def test_2_dicts(self):
         print("\n" + "testing extend with two dicts")
         sample_dict1 = {"foo": 1}
         sample_dict2 = {"bar": 2}
         result = {"foo": 1, "bar": 2}
-        self.assertEqual(extend(sample_dict1, sample_dict2), result)
+        self.assertDictEqual(extend(sample_dict1, sample_dict2), result)
 
     def test_true_merge_preserving_originals(self):
         print("\n"+"testing the merging of a blank dict with two others, and "
@@ -37,10 +39,10 @@ class TestExtend(unittest.TestCase):
         sample_dict3_untouched = sample_dict3
         result = {"apple": 0, "banana": {"weight": 52, "price": 200},
                   "cherry": 97, "durian": 100}
-        self.assertEqual(extend(True, sample_dict1, sample_dict2, sample_dict3)
-                         , result)
-        self.assertEqual(sample_dict2, sample_dict2_untouched)
-        self.assertEqual(sample_dict3, sample_dict3_untouched)
+        self.assertDictEqual(extend(True, sample_dict1, sample_dict2,
+                                    sample_dict3), result)
+        self.assertDictEqual(sample_dict2, sample_dict2_untouched)
+        self.assertDictEqual(sample_dict3, sample_dict3_untouched)
 
     def test_merge_preserving_originals(self):
         print("\n"+"testing the merging of a blank dict with two others, and "
@@ -53,10 +55,10 @@ class TestExtend(unittest.TestCase):
         sample_dict3_untouched = sample_dict3
         result = {"apple": 0, "banana": {"price": 200}, "durian": 100,
                   "cherry": 97}
-        self.assertEqual(extend(sample_dict1, sample_dict2, sample_dict3)
+        self.assertDictEqual(extend(sample_dict1, sample_dict2, sample_dict3)
                          , result)
-        self.assertEqual(sample_dict2, sample_dict2_untouched)
-        self.assertEqual(sample_dict3, sample_dict3_untouched)
+        self.assertDictEqual(sample_dict2, sample_dict2_untouched)
+        self.assertDictEqual(sample_dict3, sample_dict3_untouched)
 
     def test_true_extend(self):
         print("\n" + "testing a extend of two dicts with true")
@@ -65,7 +67,7 @@ class TestExtend(unittest.TestCase):
         sample_dict2 = {"banana": {"price": 200}, "durian": 100}
         result = {"apple": 0, "banana": {"weight": 52, "price": 200},
                   "cherry": 97, "durian": 100}
-        self.assertEqual(extend(True, sample_dict1, sample_dict2), result)
+        self.assertDictEqual(extend(True, sample_dict1, sample_dict2), result)
 
     def test_recursive_dicts(self):
         print("\n" + "testing merging of a recursive dicts")
@@ -73,21 +75,21 @@ class TestExtend(unittest.TestCase):
         sample_dict2 = {"layer1": {"layer2": {"layer3": {"last_layer": 0}}}}
         result = {"foobar": 1, "layer1":
             {"layer2": {"layer3": {"last_layer": 0}}}}
-        self.assertEqual(extend(sample_dict1, sample_dict2), result)
+        self.assertDictEqual(extend(sample_dict1, sample_dict2), result)
 
     def test_merge_on_deep_layer(self):
         print("\n" + "testing merging on a deep layer")
         sample_dict1 = {"layer1": {"layer2": {"layer3": {"last_layer": 1}}}}
         sample_dict2 = {"layer1": {"layer2": {"layer_3": {"last_layer": 2}}}}
         result = {"layer1": {"layer2": {"layer_3": {"last_layer": 2}}}}
-        self.assertEqual(extend(sample_dict1, sample_dict2), result)
+        self.assertDictEqual(extend(sample_dict1, sample_dict2), result)
 
     def test_one_merging_list_with_primitive_datatypes(self):
         print("\n" + "testing merging a list into a dict")
         sample_dict1 = {"foo": 1, "bar": 1}
         sample_dict2 = {"bar": [1, "2", 3.0, True, None], "foobar": 1}
         result = {"foo": 1, "bar": [1, "2", 3.0, True, None], "foobar": 1}
-        self.assertEqual(extend(sample_dict1, sample_dict2), result)
+        self.assertDictEqual(extend(sample_dict1, sample_dict2), result)
 
     def test_true_merge_with_lists_no_overlapping_dicts(self):
         print("\n" + "testing merging dicts with lists that don't overlap")
@@ -97,7 +99,7 @@ class TestExtend(unittest.TestCase):
         result = {
                 "outer": ["more_extra", {"foo": 2, "bar": 2},
                           "extra2", ["extra3"]]}
-        self.assertEqual(extend(True, sample_dict1, sample_dict2), result)
+        self.assertDictEqual(extend(True, sample_dict1, sample_dict2), result)
 
     def test_true_merge_deep_dicts(self):
         print("\n"+"testing the merging of dicts with deep layers")
@@ -109,7 +111,7 @@ class TestExtend(unittest.TestCase):
         result = {'layer1': {
             'layer2': {'layer_other_3': {'layer4': {'layer5': {'layer6': 1}}},
                        'layer3': {'layer4': {'layer5': {'layer6': 1}}}}}}
-        self.assertEqual(extend(True, sample_dict1, sample_dict2), result)
+        self.assertDictEqual(extend(True, sample_dict1, sample_dict2), result)
 
     def test_true_merge_with_overlap(self):
         sample_dict1 = {"layer1": {"layer2": {"layer3": 1}, "layer2_extra1": 1},
@@ -119,14 +121,23 @@ class TestExtend(unittest.TestCase):
         result = {"layer1": {"layer2": {"layer3": 2}, "layer2_extra2": 2,
                              "layer2_extra1": 1}, "layer1_extra1": 1,
                   "layer1_extra2": 2}
-        self.assertEqual(extend(True, sample_dict1, sample_dict2), result)
+        self.assertDictEqual(extend(True, sample_dict1, sample_dict2), result)
 
     def test_merge_dict_in_list_with_overlap(self):
         sample_dict1 = [{"foo": 1, "bling": 1}, "extra1", ["extra2"]]
         sample_dict2 = [{"foo": 2, "bar": 2}]
         result = [{"foo": 2, "bar": 2, "bling": 1}, "extra1", ["extra2"]]
-        self.assertEqual(extend(sample_dict1, sample_dict2), result)
+        self.assertListEqual(extend(sample_dict1, sample_dict2), result)
 
+    def test_merging_5_things(self):
+        sample_dict1 = {"dict1": 1}
+        sample_dict2 = {"dict2": 2}
+        sample_dict3 = {"dict3": 3}
+        sample_dict4 = {"dict4": 4}
+        sample_dict5 = {"dict5": 5}
+        result = {"dict1": 1, "dict2": 2, "dict3": 3, "dict4": 4, "dict5": 5}
+        self.assertDictEqual(extend(sample_dict1, sample_dict2, sample_dict3,
+                                sample_dict4, sample_dict5), result)
 
 if __name__ == '__main__':
     unittest.main()
