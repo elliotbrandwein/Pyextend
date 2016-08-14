@@ -158,9 +158,18 @@ class TestExtend(unittest.TestCase):
     def test_true_merge_with_list_in_dict(self):
         dict_1 = {"apple": [{"price": 100, "wieght": 200}, "extra", "extra"]}
         dict_2 = {"apple": [{"price": 200}, "two", "three"]}
+        result = extend(True, dict_1, dict_2)
+        correct_result = {"apple": [{"price": 200, "wieght": 200}, "two",
+                                    "three"]}
+        self.assertDictEqual(result, correct_result)
+
+    def test_true_merge_with_lists_blank_first(self):
+        dict_1 = {"apple": [{"price": 100, "wieght": 200}, "extra", "extra"]}
+        dict_2 = {"apple": [{"price": 200}, "two", "three"]}
         result = extend(True, {}, dict_1, dict_2)
         correct_result = {"apple": [{"price": 200, "wieght": 200}, "two",
                                     "three"]}
-        self.assertDictEqual(result,correct_result)
+        self.assertDictEqual(result, correct_result)
+
 if __name__ == '__main__':
     unittest.main()

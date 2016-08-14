@@ -66,7 +66,6 @@ def extend(*args):
                             clone = src
                         else:
                             src = {}
-
                     target[name] = extend(deep, clone, copy)
 
                 else:
@@ -88,6 +87,7 @@ def extend(*args):
                 # hack to fix test_true_merge_reg_dict_with_dict_with_list
                 if target_length == 0:
                     target = [element]
+                    target_length += 1
 
                 elif not isinstance(element, Mapping):
                     if target_length <= i:
@@ -100,6 +100,5 @@ def extend(*args):
                 # this will take care of overlapping dicts in two lists
                 else:
                     target[i] = extend(deep, target[i], element)
-            return target
 
     return target
