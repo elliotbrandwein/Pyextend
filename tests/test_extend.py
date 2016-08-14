@@ -164,10 +164,10 @@ class TestExtend(unittest.TestCase):
         self.assertDictEqual(result, correct_result)
 
     def test_true_merge_with_lists_blank_first(self):
-        dict_1 = {"apple": [{"price": 100, "wieght": 200}, "extra", "extra"]}
+        dict_1 = {"apple": [{"price": 100, "weight": 200}, "extra", "extra"]}
         dict_2 = {"apple": [{"price": 200}, "two", "three"]}
         result = extend(True, {}, dict_1, dict_2)
-        correct_result = {"apple": [{"price": 200, "wieght": 200}, "two",
+        correct_result = {"apple": [{"price": 200, "weight": 200}, "two",
                                     "three"]}
         self.assertDictEqual(result, correct_result)
 

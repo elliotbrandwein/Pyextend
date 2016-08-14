@@ -84,10 +84,10 @@ def extend(*args):
                 if target_length < i:
                     overshoot = True
 
-                # hack to fix test_true_merge_reg_dict_with_dict_with_list
+                # hack to fix merging with a blank target
                 if target_length == 0:
                     target = [element]
-                    target_length += 1
+                    target_length = 1
 
                 elif not isinstance(element, Mapping):
                     if target_length <= i:
@@ -102,3 +102,4 @@ def extend(*args):
                     target[i] = extend(deep, target[i], element)
 
     return target
+
