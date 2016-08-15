@@ -13,20 +13,22 @@ class TestExtend(unittest.TestCase):
     def test_1_dict(self):
         sample_dict1 = {"test": 1}
         sample_dict1_copy = {"test": 1}
+
         self.assertDictEqual(extend(sample_dict1), sample_dict1_copy)
 
     def test_1_list(self):
         sample_list = ["value", 1, 2.0, False, None]
         sample_list_copy = ["value", 1, 2.0, False, None]
+
         self.assertListEqual(extend(sample_list), sample_list_copy)
 
     def test_2_dicts(self):
         sample_dict1 = {"foo": 1}
-        sample_dict1_copy = sample_dict1
         sample_dict2 = {"bar": 2}
         sample_dict2_copy = sample_dict2
-        correct_result = {"foo": 1, "bar": 2}
         result = extend(sample_dict1, sample_dict2)
+        correct_result = {"foo": 1, "bar": 2}
+
         self.assertDictEqual(result, correct_result)
         self.assertDictEqual(sample_dict2_copy, sample_dict2)
         self.assertDictEqual(sample_dict1, result)
@@ -42,8 +44,8 @@ class TestExtend(unittest.TestCase):
         correct_result = {"apple": 0, "banana": {"weight": 52, "price": 200},
                           "cherry": 97, "durian": 100}
 
-        self.assertDictEqual(extend(result), correct_result)
-        self.assertDictEqual(sample_dict1,result)
+        self.assertDictEqual(result, correct_result)
+        self.assertDictEqual(sample_dict1, result)
         self.assertDictEqual(sample_dict2, sample_dict2_copy)
         self.assertDictEqual(sample_dict3, sample_dict3_copy)
 
@@ -57,6 +59,7 @@ class TestExtend(unittest.TestCase):
         result = extend(sample_dict1, sample_dict2, sample_dict3)
         correct_result = {"apple": 0, "banana": {"price": 200}, "durian": 100,
                           "cherry": 97}
+
         self.assertDictEqual(sample_dict1, result)
         self.assertDictEqual(result, correct_result)
         self.assertDictEqual(sample_dict2, sample_dict2_copy)
@@ -67,9 +70,10 @@ class TestExtend(unittest.TestCase):
                         "cherry": 97}
         sample_dict2 = {"banana": {"price": 200}, "durian": 100}
         sample_dict2_copy = sample_dict2
-        result = extend(True,sample_dict1,sample_dict2)
+        result = extend(True, sample_dict1, sample_dict2)
         correct_result = {"apple": 0, "banana": {"weight": 52, "price": 200},
-                  "cherry": 97, "durian": 100}
+                          "cherry": 97, "durian": 100}
+
         self.assertDictEqual(sample_dict1, result)
         self.assertDictEqual(sample_dict2, sample_dict2_copy)
         self.assertDictEqual(result, correct_result)
@@ -77,15 +81,25 @@ class TestExtend(unittest.TestCase):
     def test_recursive_dicts(self):
         sample_dict1 = {"foobar": 1}
         sample_dict2 = {"layer1": {"layer2": {"layer3": {"last_layer": 0}}}}
-        result = {"foobar": 1, "layer1": {"layer2": {"layer3": {"last_layer": 0}
-                                                     }}}
-        self.assertDictEqual(extend(sample_dict1, sample_dict2), result)
+        sample_dict2_copy = sample_dict2
+        result = extend(sample_dict1, sample_dict2)
+        correct_result = {"foobar": 1, "layer1": {"layer2": {"layer3": {
+            "last_layer": 0}}}}
+
+        self.assertDictEqual(sample_dict1, result)
+        self.assertDictEqual(sample_dict2, sample_dict2_copy)
+        self.assertDictEqual(result, correct_result)
 
     def test_merge_on_deep_layer(self):
         sample_dict1 = {"layer1": {"layer2": {"layer3": {"last_layer": 1}}}}
         sample_dict2 = {"layer1": {"layer2": {"layer_3": {"last_layer": 2}}}}
-        result = {"layer1": {"layer2": {"layer_3": {"last_layer": 2}}}}
-        self.assertDictEqual(extend(sample_dict1, sample_dict2), result)
+        sample_dict2_copy = sample_dict2
+        result = extend(sample_dict1, sample_dict2)
+        correct_result = {"layer1": {"layer2": {"layer_3": {"last_layer": 2}}}}
+
+        self.assertDictEqual(sample_dict1, result)
+        self.assertDictEqual(sample_dict2, sample_dict2_copy)
+        self.assertDictEqual(result, correct_result)
 
     def test_one_merging_list_with_primitive_data_types(self):
         print("\n" + "testing merging a list into a dict")
@@ -108,30 +122,38 @@ class TestExtend(unittest.TestCase):
         sample_dict1_copy = {"foo": 1}
         sample_dict2 = {"bar": ["list"]}
         sample_dict2_copy = {"bar": ["list"]}
-        result = {"foo": 1, "bar": ["list"]}
-        self.assertDictEqual(extend(True, sample_dict1, sample_dict2), result)
+        correct_result = {"foo": 1, "bar": ["list"]}
+        result = extend(True, sample_dict1, sample_dict2)
+        self.assertDictEqual(result, correct_result)
         self.assertDictEqual(sample_dict2, sample_dict2_copy)
 
     def test_true_merge_deep_dicts(self):
         sample_dict1 = {"layer1": {"layer2": {"layer3": {"layer4": {"layer5": {
             "layer6": 1}}}}}}
+        sample_dict1_copy = sample_dict1
         sample_dict2 = {"layer1": {"layer2": {"layer_other_3": {"layer4": {
             "layer5": {"layer6": 1}}}}}}
-
-        result = {'layer1': {
+        sample_dict2_copy = sample_dict2
+        result = extend(True, sample_dict1, sample_dict2)
+        correct_result = {'layer1': {
             'layer2': {'layer_other_3': {'layer4': {'layer5': {'layer6': 1}}},
                        'layer3': {'layer4': {'layer5': {'layer6': 1}}}}}}
-        self.assertDictEqual(extend(True, sample_dict1, sample_dict2), result)
+        self.assertDictEqual(result, correct_result)
+        self.assertDictEqual(sample_dict2, sample_dict2_copy)
 
     def test_true_merge_with_overlap(self):
         sample_dict1 = {"layer1": {"layer2": {"layer3": 1}, "layer2_extra1": 1},
                         "layer1_extra1": 1}
+        sample_dict1_copy = sample_dict1
         sample_dict2 = {"layer1": {"layer2": {"layer3": 2}, "layer2_extra2": 2},
                         "layer1_extra2": 2}
-        result = {"layer1": {"layer2": {"layer3": 2}, "layer2_extra2": 2,
+        sample_dict2_copy = sample_dict2
+        result = extend(True, sample_dict1, sample_dict2)
+        correct_result = {"layer1": {"layer2": {"layer3": 2}, "layer2_extra2": 2,
                              "layer2_extra1": 1}, "layer1_extra1": 1,
                   "layer1_extra2": 2}
-        self.assertDictEqual(extend(True, sample_dict1, sample_dict2), result)
+        self.assertDictEqual(result, correct_result)
+        self.assertDictEqual(sample_dict2, sample_dict2_copy)
 
     def test_merge_dict_in_list_with_overlap(self):
         sample_dict1 = [{"foo": 1, "bling": 1}, "extra1", ["extra2"]]
