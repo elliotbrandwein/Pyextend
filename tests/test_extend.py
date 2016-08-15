@@ -102,11 +102,16 @@ class TestExtend(unittest.TestCase):
         self.assertDictEqual(result, correct_result)
 
     def test_one_merging_list_with_primitive_data_types(self):
-        print("\n" + "testing merging a list into a dict")
         sample_dict1 = {"foo": 1, "bar": 1}
         sample_dict2 = {"bar": [1, "2", 3.0, True, None], "foobar": 1}
-        result = {"foo": 1, "bar": [1, "2", 3.0, True, None], "foobar": 1}
-        self.assertDictEqual(extend(sample_dict1, sample_dict2), result)
+        sample_dict2_copy = sample_dict2
+        result = extend(sample_dict1, sample_dict2)
+        correct_result = {"foo": 1, "bar": [1, "2", 3.0, True, None],
+                          "foobar": 1}
+
+        self.assertDictEqual(sample_dict1, result)
+        self.assertDictEqual(sample_dict2, sample_dict2_copy)
+        self.assertDictEqual(result, correct_result)
 
     def test_true_merge_with_lists_no_overlapping_dicts(self):
         sample_dict1 = {
@@ -119,18 +124,18 @@ class TestExtend(unittest.TestCase):
 
     def test_true_merge_reg_dict_with_dict_with_list(self):
         sample_dict1 = {"foo": 1}
-        sample_dict1_copy = {"foo": 1}
         sample_dict2 = {"bar": ["list"]}
         sample_dict2_copy = {"bar": ["list"]}
         correct_result = {"foo": 1, "bar": ["list"]}
         result = extend(True, sample_dict1, sample_dict2)
+
+        self.assertDictEqual(sample_dict1, result)
         self.assertDictEqual(result, correct_result)
         self.assertDictEqual(sample_dict2, sample_dict2_copy)
 
     def test_true_merge_deep_dicts(self):
         sample_dict1 = {"layer1": {"layer2": {"layer3": {"layer4": {"layer5": {
             "layer6": 1}}}}}}
-        sample_dict1_copy = sample_dict1
         sample_dict2 = {"layer1": {"layer2": {"layer_other_3": {"layer4": {
             "layer5": {"layer6": 1}}}}}}
         sample_dict2_copy = sample_dict2
@@ -138,28 +143,37 @@ class TestExtend(unittest.TestCase):
         correct_result = {'layer1': {
             'layer2': {'layer_other_3': {'layer4': {'layer5': {'layer6': 1}}},
                        'layer3': {'layer4': {'layer5': {'layer6': 1}}}}}}
+
+        self.assertDictEqual(sample_dict1, result)
         self.assertDictEqual(result, correct_result)
         self.assertDictEqual(sample_dict2, sample_dict2_copy)
 
     def test_true_merge_with_overlap(self):
         sample_dict1 = {"layer1": {"layer2": {"layer3": 1}, "layer2_extra1": 1},
                         "layer1_extra1": 1}
-        sample_dict1_copy = sample_dict1
         sample_dict2 = {"layer1": {"layer2": {"layer3": 2}, "layer2_extra2": 2},
                         "layer1_extra2": 2}
         sample_dict2_copy = sample_dict2
         result = extend(True, sample_dict1, sample_dict2)
-        correct_result = {"layer1": {"layer2": {"layer3": 2}, "layer2_extra2": 2,
-                             "layer2_extra1": 1}, "layer1_extra1": 1,
-                  "layer1_extra2": 2}
+        correct_result = {"layer1": {"layer2": {"layer3": 2},
+                                     "layer2_extra2": 2, "layer2_extra1": 1},
+                          "layer1_extra1": 1, "layer1_extra2": 2}
+
+        self.assertDictEqual(sample_dict1, result)
         self.assertDictEqual(result, correct_result)
         self.assertDictEqual(sample_dict2, sample_dict2_copy)
 
     def test_merge_dict_in_list_with_overlap(self):
         sample_dict1 = [{"foo": 1, "bling": 1}, "extra1", ["extra2"]]
         sample_dict2 = [{"foo": 2, "bar": 2}]
-        result = [{"foo": 2, "bar": 2, "bling": 1}, "extra1", ["extra2"]]
-        self.assertListEqual(extend(sample_dict1, sample_dict2), result)
+        sample_dict2_copy = sample_dict2
+        result = extend(sample_dict1, sample_dict2)
+        correct_result = [{"foo": 2, "bar": 2, "bling": 1}, "extra1",
+                          ["extra2"]]
+
+        self.assertListEqual(sample_dict1, result)
+        self.assertListEqual(sample_dict2, sample_dict2_copy)
+        self.assertListEqual(result, correct_result)
 
     def test_merging_5_things(self):
         sample_dict1 = {"dict1": 1}
