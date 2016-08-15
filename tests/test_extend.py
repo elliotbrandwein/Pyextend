@@ -4,60 +4,75 @@ from extend import extend
 
 
 class TestExtend(unittest.TestCase):
-    def test_0_dicts(self):
+    def test_blank_dict(self):
         self.assertDictEqual(extend(), {})
+
+    def test_blank_list(self):
+        self.assertListEqual(extend([]), [])
 
     def test_1_dict(self):
         sample_dict1 = {"test": 1}
-        sample_dict1_untouched = {"test": 1}
-        self.assertDictEqual(extend(sample_dict1), sample_dict1_untouched)
+        sample_dict1_copy = {"test": 1}
+        self.assertDictEqual(extend(sample_dict1), sample_dict1_copy)
 
     def test_1_list(self):
         sample_list = ["value", 1, 2.0, False, None]
-        sample_list_untouched = ["value", 1, 2.0, False, None]
-        self.assertListEqual(extend(sample_list), sample_list_untouched)
+        sample_list_copy = ["value", 1, 2.0, False, None]
+        self.assertListEqual(extend(sample_list), sample_list_copy)
 
     def test_2_dicts(self):
         sample_dict1 = {"foo": 1}
+        sample_dict1_copy = sample_dict1
         sample_dict2 = {"bar": 2}
-        result = {"foo": 1, "bar": 2}
-        self.assertDictEqual(extend(sample_dict1, sample_dict2), result)
+        sample_dict2_copy = sample_dict2
+        correct_result = {"foo": 1, "bar": 2}
+        result = extend(sample_dict1, sample_dict2)
+        self.assertDictEqual(result, correct_result)
+        self.assertDictEqual(sample_dict2_copy, sample_dict2)
+        self.assertDictEqual(sample_dict1, result)
 
     def test_true_merge_preserving_originals(self):
         sample_dict1 = {}
         sample_dict2 = {"apple": 0, "banana": {"weight": 52, "price": 100},
                         "cherry": 97}
-        sample_dict2_untouched = sample_dict2
+        sample_dict2_copy = sample_dict2
         sample_dict3 = {"banana": {"price": 200}, "durian": 100}
-        sample_dict3_untouched = sample_dict3
-        result = {"apple": 0, "banana": {"weight": 52, "price": 200},
-                  "cherry": 97, "durian": 100}
-        self.assertDictEqual(extend(True, sample_dict1, sample_dict2,
-                                    sample_dict3), result)
-        self.assertDictEqual(sample_dict2, sample_dict2_untouched)
-        self.assertDictEqual(sample_dict3, sample_dict3_untouched)
+        sample_dict3_copy = sample_dict3
+        result = extend(True, sample_dict1, sample_dict2, sample_dict3)
+        correct_result = {"apple": 0, "banana": {"weight": 52, "price": 200},
+                          "cherry": 97, "durian": 100}
+
+        self.assertDictEqual(extend(result), correct_result)
+        self.assertDictEqual(sample_dict1,result)
+        self.assertDictEqual(sample_dict2, sample_dict2_copy)
+        self.assertDictEqual(sample_dict3, sample_dict3_copy)
 
     def test_merge_preserving_originals(self):
         sample_dict1 = {}
         sample_dict2 = {"apple": 0, "banana": {"weight": 52, "price": 100},
                         "cherry": 97}
-        sample_dict2_untouched = sample_dict2
+        sample_dict2_copy = sample_dict2
         sample_dict3 = {"banana": {"price": 200}, "durian": 100}
-        sample_dict3_untouched = sample_dict3
-        result = {"apple": 0, "banana": {"price": 200}, "durian": 100,
-                  "cherry": 97}
-        self.assertDictEqual(extend(sample_dict1, sample_dict2, sample_dict3),
-                             result)
-        self.assertDictEqual(sample_dict2, sample_dict2_untouched)
-        self.assertDictEqual(sample_dict3, sample_dict3_untouched)
+        sample_dict3_copy = sample_dict3
+        result = extend(sample_dict1, sample_dict2, sample_dict3)
+        correct_result = {"apple": 0, "banana": {"price": 200}, "durian": 100,
+                          "cherry": 97}
+        self.assertDictEqual(sample_dict1, result)
+        self.assertDictEqual(result, correct_result)
+        self.assertDictEqual(sample_dict2, sample_dict2_copy)
+        self.assertDictEqual(sample_dict3, sample_dict3_copy)
 
     def test_true_extend(self):
         sample_dict1 = {"apple": 0, "banana": {"weight": 52, "price": 100},
                         "cherry": 97}
         sample_dict2 = {"banana": {"price": 200}, "durian": 100}
-        result = {"apple": 0, "banana": {"weight": 52, "price": 200},
+        sample_dict2_copy = sample_dict2
+        result = extend(True,sample_dict1,sample_dict2)
+        correct_result = {"apple": 0, "banana": {"weight": 52, "price": 200},
                   "cherry": 97, "durian": 100}
-        self.assertDictEqual(extend(True, sample_dict1, sample_dict2), result)
+        self.assertDictEqual(sample_dict1, result)
+        self.assertDictEqual(sample_dict2, sample_dict2_copy)
+        self.assertDictEqual(result, correct_result)
 
     def test_recursive_dicts(self):
         sample_dict1 = {"foobar": 1}
