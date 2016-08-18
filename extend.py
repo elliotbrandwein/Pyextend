@@ -56,7 +56,6 @@ def extend(*args):
 
                     copy_is_list_type = isinstance(copy, MutableSequence)
                     if copy_is_list_type:
-                        copy_is_list_type = False
                         if src and isinstance(src, MutableSequence):
                             clone = src
                         else:

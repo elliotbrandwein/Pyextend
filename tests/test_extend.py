@@ -239,7 +239,7 @@ class TestExtend(unittest.TestCase):
         result = extend(True, {}, dict_1, dict_2)
         correct_result = {"apple": [{"price": 200, "weight": 200}, "two",
                                     "three"]}
-        
+
         self.assertDictEqual(result, correct_result)
 
 if __name__ == '__main__':
