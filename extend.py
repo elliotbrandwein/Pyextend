@@ -101,4 +101,3 @@ def extend(*args):
                     target[i] = extend(deep, target[i], element)
 
     return target
-
