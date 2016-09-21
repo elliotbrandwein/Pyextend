@@ -3,7 +3,7 @@ Pyextend
 
 What it does
 --------------------------------------
-This function behaves just the .extend function in Jquery, execpt for all Mapping and Mutable Sequence types (a.k.a dicts and lists). This means you can how get deep and shallow copies of your dicts and lists in python. 
+This function behaves just the .extend function in Jquery, execpt for all Mapping and Mutable Sequence types (a.k.a dicts and lists). This means you can now get deep and shallow copies of your dicts and lists in python. 
 
 Learn how to use it
 --------------------------------------
@@ -16,3 +16,4 @@ Obviously I couldn’t replicate all the functionality of the .extend but this m
 
 - If there is no dict or list as an argument, pyextend will return a blank dict
 - If there is only one dict or list as an argument, pyextend will return that dict/list ( the jquery version merged that dict/list into jquery, obviously something I can’t do) 
+- If there is a string as an input, extend in Jquery would parse it. Pyextend however will just ignore it. 
